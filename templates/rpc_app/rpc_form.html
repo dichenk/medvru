@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON-RPC Клиент</title>
+    <style>
+        body { 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+        }
+        .form-group { 
+            margin-bottom: 15px; 
+        }
+        .result { 
+            margin-top: 20px;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON-RPC Клиент</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: #666;">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit">Отправить запрос</button>
+    </form>
+
+    {% if form.result %}
+    <div class="result">
+        <h2>Результат:</h2>
+        {% if form.result.error %}
+        <div class="error">
+            {{ form.result.error }}
+        </div>
+        {% else %}
+        <div class="success">
+            Запрос выполнен успешно
+        </div>
+        <pre>{{ form.result|pprint }}</pre>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>
